@@ -88,7 +88,27 @@ function register_user($auth_data) {
 }
 
 function login($auth_data) {
+	if (empty($auth_data) || !isset($auth_data['login']) || empty($auth_data['login'])) return false;
 
+	$user = get_user_info($auth_data['login']);
+
+	if (empty($user)) {
+		$_SESSION['error'] = 'Такой пользователь не существует';
+		header('Location: ' . get_url());
+		die;
+	}
+
+	if (password_verify($auth_data['pass'], $user['pass'])) {
+		$_SESSION['user'] = $user;
+
+		$_SESSION['error'] = '';
+		header('Location: ' . get_url('user_posts.php?id=' . $user['id']));
+		die;
+	} else {
+		$_SESSION['error'] = 'Неверный пароль';
+		header('Location: ' . get_url());
+		die;
+	}
 }
 
 function get_error_message() {
