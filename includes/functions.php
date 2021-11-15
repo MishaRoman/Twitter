@@ -8,6 +8,12 @@ function debug($var, $stop = false) {
 	if ($stop) die;
 }
 
+// Перенаправляет пользователя по указанной ссылке или на главную
+function redirect($link = HOST) {
+	header("Location: $link");
+	die;
+}
+
 function get_url($page = '') {
 	return HOST . "/$page";
 }
@@ -71,18 +77,18 @@ function register_user($auth_data) {
 	$user = get_user_info($auth_data['login']);
 	if (!empty($user)) {
 		$_SESSION['error'] = 'Пользователь ' . $auth_data['login'] . ' уже существует';
-		header('Location: ' . get_url('register.php'));
+		redirect(get_url('register.php'));
 		die;
 	}
 
 	if ($auth_data['pass'] !== $auth_data['pass2']) {
 		$_SESSION['error'] = 'Пароли не совпадают';
-		header('Location: ' . get_url('register.php'));
+		redirect(get_url('register.php'));
 		die;
 	}
 
 	if (add_user($auth_data['login'], $auth_data['pass'])) {
-		header('Location: ' . get_url());
+		redirect(get_url());
 		die;
 	}
 }
@@ -119,4 +125,9 @@ function get_error_message() {
 	}
 
 	return $error;
+}
+
+// Функция для проверки авторизирован ли пользователь
+function logged_in() {
+	return isset($_SESSION['user']['id']) && !empty($_SESSION['user']['id']);
 }

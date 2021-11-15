@@ -19,7 +19,7 @@
 					<a href="<?php echo get_url(); ?>" class="header__link header__link_main"></a>
 				</li>
 				<li>
-					<?php if (isset($_SESSION['user']['id'])) { ?>
+					<?php if (logged_in()) { ?>
 						<a href="<?php echo get_url('includes/logout.php') ?>" class="header__link header__link_exit" title="Выйти"></a>
 					<?php } else { ?>
 						<button class="header__link header__link_profile_fill" title="Авторизоваться"></button>

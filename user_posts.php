@@ -24,5 +24,6 @@ if (!empty($posts)) {
 
 
 include_once "includes/header.php";
+if (logged_in()) include 'includes/tweet_form.php';
 include_once "includes/posts.php";
 include_once "includes/footer.php";

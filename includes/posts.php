@@ -38,5 +38,5 @@
 </section>
 
 <?php } else {
-	echo "Постов нету :(";
+	echo '<h2 class="tweet-form__title">Здесь пока нету твитов ...</h2>';
 }

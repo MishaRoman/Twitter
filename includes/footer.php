@@ -1,5 +1,6 @@
 	</main>
 </div>
+<?php if (logged_in()) { ?>
 <div class="modal overlay">
 	<div class="container modal__body" id="login-modal">
 		<div class="modal-close">
@@ -23,6 +24,7 @@
 		</section>
 	</div>
 </div>
+<?php } ?>
 <script src="<?php echo get_url('js/scripts.js'); ?>"></script>
 
 <!-- Если есть ошибка при авторизации отображаем модальное окно -->
