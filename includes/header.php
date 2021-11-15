@@ -1,4 +1,4 @@
-<?php include_once "includes/functions.php" ?>
+<?php include_once "functions.php" ?>
 
 <!doctype html>
 <html lang="ru">
@@ -32,8 +32,10 @@
 		<section class="wrapper">
 			<div class="main-header">
 				<a href="<?php echo get_url(); ?>" class="header__link header__link_home" title="Лента"></a>
-				<a href="<?php echo get_url('user_posts.php') ?>" class="header__link header__link_profile" title="Твиты пользователя"></a>
-				<a href="#" class="header__link header__link_likes" title="Понравившиеся твиты"></a>
-				<a href="#" class="header__link header__link_sort" title="Сортировать"></a>
+				<?php if (logged_in()) { ?>
+					<a href="<?php echo get_url('user_posts.php') ?>" class="header__link header__link_profile" title="Твиты пользователя"></a>
+					<a href="#" class="header__link header__link_likes" title="Понравившиеся твиты"></a>
+				<?php } ?>
+				<a href="<?php echo get_url('includes/sorted.php') ?>" class="header__link header__link_sort" title="Сортировать"></a>
 			</div>
 		</section>

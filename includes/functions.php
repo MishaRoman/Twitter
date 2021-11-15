@@ -50,12 +50,16 @@ function db_query($sql, $exec = false) {
 	return db()->query($sql);
 }
 
-function get_posts($user_id = 0) {
+function get_posts($user_id = 0, $sort = false) {
+	$sorting = 'DESC';
+	if ($sort) $sorting = 'ASC';
+
 	if ($user_id > 0) {
 		return db_query("SELECT posts.*, users.name, users.login, users.avatar 
-			FROM `posts` JOIN `users` ON users.id = posts.user_id WHERE posts.user_id = $user_id")->fetchAll();
+			FROM `posts` JOIN `users` ON users.id = posts.user_id WHERE posts.user_id = $user_id ORDER BY posts.`date` $sorting;")->fetchAll();
 	}
-	return db_query("SELECT posts.*, users.name, users.login, users.avatar FROM `posts` JOIN `users` ON users.id = posts.user_id")->fetchAll();
+	return db_query("SELECT posts.*, users.name, users.login, users.avatar
+		FROM `posts` JOIN `users` ON users.id = posts.user_id ORDER BY posts.`date` $sorting;")->fetchAll();
 }
 
 // Функция для проверки существует ли такой пользователь
@@ -130,4 +134,21 @@ function get_error_message() {
 // Функция для проверки авторизирован ли пользователь
 function logged_in() {
 	return isset($_SESSION['user']['id']) && !empty($_SESSION['user']['id']);
+}
+
+function add_post($text, $image) {
+	$text = trim($text);
+	if (mb_strlen($text) > 255) {
+		$text = mb_substr($text, 0, 250). ' ...';
+	}
+
+	$user_id = $_SESSION['user']['id'];
+	$sql = "INSERT INTO `posts` (`id`, `user_id`, `text`, `image`) VALUES (NULL, $user_id, '$text', '$image')";
+	return db_query($sql, true);
+}
+
+function delete_post($id) {
+	$user_id = $_SESSION['user']['id'];
+	$sql = "DELETE FROM `posts` WHERE `id` = $id AND `user_id` = $user_id";
+	return db_query($sql, true);
 }
